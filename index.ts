@@ -1,58 +1,22 @@
-const menu = [
-    { name: "Margherita", price: 8 },
-    { name: "Pepperoni", price: 10 },
-    { name: "Hawaiian", price: 10 },
-    { name: "Veggie", price: 9 },
-]
+// Challenge: finish the object type definition
 
-let cashInRegister = 100
-let nextOrderId = 1
-const orderQueue = []
+// Note: without Person type there is no errors with isStudent and isstudent, but when we add Person type we must be consistent and write isStudent same for person 1 and person 2
 
-function addNewPizza(pizzaObj) {
-    menu.push(pizzaObj)
+type Person = {
+    name: string
+    age: number
+    isStudent: boolean
 }
 
-function placeOrder(pizzaName) {
-    const selectedPizza = menu.find(pizzaObj => pizzaObj.name === pizzaName)
-    if (!selectedPizza) {
-        console.error(`${pizzaName} does not exist in the menu`)
-        return
-    }
-    cashInRegister += selectedPizza.price
-    const newOrder = { id: nextOrderId++, pizza: selectedPizza, status: "ordered" }
-    orderQueue.push(newOrder)
-    return newOrder
+let person1: Person = {
+    name: "Joe",
+    age: 42,
+    isStudent: true
 }
 
-/**
- * Challenge: Teach TS what data type should be used for the 
- * orderId in the completeOrder function. Then check for any
- * additional warnings TS comes up with and fix those.
- * 
- * Solution
-function completeOrder(orderId: number) {
-    const order = orderQueue.find(order => order.id === orderId)
-    order.status = "completed"
-    return order
+let person2: Person = {
+    name: "Jill",
+    age: 66,
+    // isstudent: false /// gives us this error -> 'isstudent' does not exist in type 'Person'
+    isStudent: false
 }
-completeOrder(1) /// 1 not "1" because orderId is a number type
- */
-
-function completeOrder(orderId) {
-    // const order = orderQueue.find(order => order.id === orderId)
-    const order: object = orderQueue.find(order => order.id === orderId)
-    order.status = "completed"
-    return order
-}
-
-addNewPizza({ name: "Chicken Bacon Ranch", cost: 12 })
-addNewPizza({ name: "BBQ Chicken", cost: 12 })
-addNewPizza({ name: "Spicy Sausage", cost: 11 })
-
-placeOrder("Chicken Bacon Ranch")
-completeOrder("1")
-
-console.log("Menu:", menu)
-console.log("Cash in register:", cashInRegister)
-console.log("Order queue:", orderQueue)
