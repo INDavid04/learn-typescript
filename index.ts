@@ -1,22 +1,62 @@
-// Challenge: finish the object type definition
+/**
+ * Challenge 1: Create a Pizza object type. It should include a `name`
+ * and a `price` property.
+ */
 
-// Note: without Person type there is no errors with isStudent and isstudent, but when we add Person type we must be consistent and write isStudent same for person 1 and person 2
-
-type Person = {
+type Pizza = {
     name: string
-    age: number
-    isStudent: boolean
+    price: number
 }
 
-let person1: Person = {
-    name: "Joe",
-    age: 42,
-    isStudent: true
+const menu = [
+    { name: "Margherita", price: 8 },
+    { name: "Pepperoni", price: 10 },
+    { name: "Hawaiian", price: 10 },
+    { name: "Veggie", price: 9 },
+]
+
+let cashInRegister = 100
+let nextOrderId = 1
+const orderQueue = []
+
+/**
+ * Challenge 2: teach TS that the pizzaObj is supposed to be a Pizza type.
+ * Then like before, look through the code to see if there are any new
+ * TS warnings to deal with (😉), and fix those issues
+ */
+
+function addNewPizza(pizzaObj: Pizza) {
+    menu.push(pizzaObj)
 }
 
-let person2: Person = {
-    name: "Jill",
-    age: 66,
-    // isstudent: false /// gives us this error -> 'isstudent' does not exist in type 'Person'
-    isStudent: false
+function placeOrder(pizzaName: string) {
+    const selectedPizza = menu.find(pizzaObj => pizzaObj.name === pizzaName)
+    if (!selectedPizza) {
+        console.error(`${pizzaName} does not exist in the menu`)
+        return
+    }
+    cashInRegister += selectedPizza.price
+    const newOrder = { id: nextOrderId++, pizza: selectedPizza, status: "ordered" }
+    orderQueue.push(newOrder)
+    return newOrder
 }
+
+function completeOrder(orderId: number) {
+    const order = orderQueue.find(order => order.id === orderId)
+    order.status = "completed"
+    return order
+}
+// Pizza type is defined with name and price, not with name and cost
+// addNewPizza({ name: "Chicken Bacon Ranch", cost: 12 })
+// addNewPizza({ name: "BBQ Chicken", cost: 12 })
+// addNewPizza({ name: "Spicy Sausage", cost: 11 })
+addNewPizza({ name: "Chicken Bacon Ranch", price: 12 })
+addNewPizza({ name: "BBQ Chicken", price: 12 })
+addNewPizza({ name: "Spicy Sausage", price: 11 })
+
+placeOrder("Chicken Bacon Ranch")
+completeOrder(1)
+
+console.log("Menu:", menu)
+console.log("Cash in register:", cashInRegister)
+console.log("Order queue:", orderQueue)
